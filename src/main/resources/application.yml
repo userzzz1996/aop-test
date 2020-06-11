@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: aop
+  jmx:
+    default-domain: ${spring.application.name}
+server:
+  port: 8080
+  servlet:
+    context-path: /${spring.application.name}

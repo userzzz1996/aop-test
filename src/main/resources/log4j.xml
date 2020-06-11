@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <!-- 配置控制台输出器 -->
+    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+        <param name="encoding" value="UTF-8" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p (%F:%L) - [%X{echoTokenText}] - [%X{trxId}] - %m%n"/>
+        </layout>
+    </appender>
+
+    <!-- 普通日志 -->
+    <appender name="DAILY" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="app/app_logs/aop.log" />
+        <param name="encoding" value="UTF-8" />
+        <param name="append" value="true"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss,SSS} %-5p (%F:%L) - [%X{echoTokenText}] - [%X{trxId}] - %m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="KAFKA" class="com.ceair.flight.logging.core.KafkaAppender">
+        <param name="topic" value="ndc-shopping-common"/>
+        <param name="brokerList" value="172.31.65.52:9092"/>
+        <layout class="com.ceair.flight.logging.core.KafkaLayout">
+        </layout>
+    </appender>
+
+    <!--the "category" element is the same as the logger element. Prior to log4j version 1.2, loggers were known as category.-->
+    <logger name="com.ceair">
+        <level value="debug" />
+    </logger>
+
+    <logger name="org.hibernate.SQL">
+        <level value="debug" />
+    </logger>
+
+    <logger name="com.alibaba.dubbo">
+        <level value="warn" />
+    </logger>
+
+    <logger name="com.alibaba.dubbo.rpc.filter.TimeoutFilter">
+        <level value="error" />
+    </logger>
+
+    <root>
+        <priority value="info" />
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="DAILY" />
+        <!--
+    <appender-ref ref="KAFKA" />
+    -->
+    </root>
+</log4j:configuration>
